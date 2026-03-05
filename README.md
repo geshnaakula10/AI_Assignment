@@ -7,7 +7,14 @@ This repository contains implementations of several Artificial Intelligence conc
 # 1. AQI Intelligent Agent
 
 ## Description
-This project implements an **Air Quality Index (AQI) agent** that categorizes air quality levels based on AQI values. The agent reads AQI data and determines the pollution category.
+This project implements an ***Air Quality Index (AQI) intelligent agent*** that determines the air quality level of different regions. The agent retrieves live air pollution data using the OpenWeather Air Pollution API, calculates AQI sub-indices for different pollutants, and determines the overall AQI category.
+
+The agent processes real-time environmental data and classifies air quality into standard AQI categories such as Good, Moderate, Poor, etc.
+
+## Data Source
+The system uses the OpenWeather Air Pollution API to fetch live pollutant concentration data for specified geographic coordinates (latitude and longitude). The API provides concentrations of major pollutants such as PM2.5, PM10, NO₂, O₃, CO, SO₂, and NH₃.
+
+These pollutant values are then used to compute AQI using standard AQI breakpoint tables.
 
 ## Components
 - `code.py` – Main agent implementation
