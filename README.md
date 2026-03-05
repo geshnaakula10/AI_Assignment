@@ -126,19 +126,47 @@ Measure exactly **2 liters** of water.
 
 ---
 
+---
+
 # How to Run
 
-### Water Jug Problem
+## Install Dependencies
+
+Install the required Python libraries before running the programs.
+
+```
+pip install -r requirements.txt
+```
+
+---
+
+## Run the AQI Intelligent Agent
+
+```
+cd AQI\ Agent
+python3 code.py
+```
+---
+
+## Run the Water Jug Search Algorithms
+
+```
 cd Water\ Jug
 python3 main.py
+```
+---
 
+## Run the Turing Test Simulation
 
-### Turing Test
+```
 cd Turing_Captcha
 python3 turing.py
+```
+---
 
+## Run the CAPTCHA System
 
-### CAPTCHA
+```
 cd Turing_Captcha
 python3 Captcha.py
-
+```
