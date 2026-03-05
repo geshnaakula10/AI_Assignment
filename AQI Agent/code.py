@@ -1,6 +1,6 @@
 import pandas as pd
 import requests
-from config import API_KEY, LAT, LON, CITY_NAME
+from config import API_KEY, CITIES
 
 # Load breakpoint tables
 df = pd.read_csv("aqi_checkpoints.csv")
@@ -31,8 +31,8 @@ def getsub_index(value, pollutant):
     return y1 + (value - x1) * (y2 - y1) / (x2 - x1)
 
 
-def fetch_live_data():
-    url = f"http://api.openweathermap.org/data/2.5/air_pollution?lat={LAT}&lon={LON}&appid={API_KEY}"
+def fetch_live_data(lat, lon):
+    url = f"http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={API_KEY}"
     response = requests.get(url)
     data = response.json()
 
@@ -43,34 +43,37 @@ def fetch_live_data():
         "PM10": components["pm10"],
         "NO2": components["no2"],
         "O3": components["o3"],
-        "CO": components["co"] / 1000,  # convert µg/m3 → mg/m3
+        "CO": components["co"] / 1000,
         "SO2": components["so2"],
         "NH3": components["nh3"],
-        "Pb": 0  # not provided
+        "Pb": 0
     }
 
 
 # ---------------- MAIN ----------------
 
-print(f"\nFetching live AQI data for {CITY_NAME}...\n")
+for city, (lat, lon) in CITIES.items():
 
-city_data = fetch_live_data()
+    print(f"\nFetching live AQI data for {city}...\n")
 
-aqi_values = []
+    city_data = fetch_live_data(lat, lon)
 
-for pollutant, value in city_data.items():
-    sub_index = getsub_index(value, pollutant)
+    aqi_values = []
 
-    if sub_index is not None:
-        aqi_values.append(sub_index)
+    for pollutant, value in city_data.items():
+        sub_index = getsub_index(value, pollutant)
 
-AQI = round(max(aqi_values))
-category, color = find_cat(AQI)
+        if sub_index is not None:
+            aqi_values.append(sub_index)
 
-print("Live Pollutant Data:")
-for p, v in city_data.items():
-    print(f"{p}: {v}")
+    AQI = round(max(aqi_values))
+    category, color = find_cat(AQI)
 
-print("\nFinal AQI:", AQI)
-print("Category:", category)
-print("Color:", color)
+    print("Live Pollutant Data:")
+    for p, v in city_data.items():
+        print(f"{p}: {v}")
+
+    print("\nFinal AQI:", AQI)
+    print("Category:", category)
+    print("Color:", color)
+    print("-" * 40)
